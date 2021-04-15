@@ -4,11 +4,13 @@
 
 .hr {
   width: 80%;
+  height: 0;
   border: 2px solid black;
-  margin: auto;
 }
-#a1 {
-  display: inline;
+.flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .selectionBox {
