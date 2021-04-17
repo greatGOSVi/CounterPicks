@@ -2,24 +2,29 @@
   text-align: center;
 }
 
-.hr {
-  width: 80%;
-  height: 0;
-  border: 2px solid black;
-}
 .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.hr {
+  width: 80%;
+  height: 10px;
+  border: 0;
+  margin: 0;
+  background-color: black;
+}
+.toggleArrows {
+  border: none;
+  position: absolute;
+}
 
 .selectionBox {
   width: 80%;
-  height: 500px;
   background-color: blanchedalmond;
   margin: auto;
   box-sizing: border-box;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
 }
@@ -35,11 +40,13 @@
 .selectionChamp {
   width: 75px;
   height: 100%;
+  padding: 0;
+  border: none;
   /*background-color: slategray;*/
 }
 .champImg {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 75px;
+  max-height: 75px;
 }
 
 /* holiwi uwu */
