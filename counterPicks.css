@@ -22,11 +22,18 @@
 .selectionBox {
   width: 80%;
   background-color: blanchedalmond;
+  padding: 5px; /* Esto se quitara. Necesito ver como justificar la columna */
+  border-top: 0;
+  border-right: 4px;
+  border-bottom: 4px;
+  border-left: 4px;
+  border-style: solid;
+  border-color: black;
   margin: auto;
   box-sizing: border-box;
-  display: none;
   flex-direction: column;
   justify-content: space-around;
+  display: none;
 }
 .selectionRow {
   width: 100%;
