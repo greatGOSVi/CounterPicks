@@ -2,14 +2,27 @@
 <html>
     <head>
         <link rel="stylesheet" href="counterPicks.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <title>CounterPicks</title>
+        
         <h1 class="centered">CounterPicks!</h1></br>
+
+        <div class="summonerSearch">
+            <input placeholder="Username" class="borderNone">
+            <select class="borderNone">
+                <option>LAS</option>
+                <option selected>LAN</option>
+            </select>
+            <button>Search</button>
+        </div>
+
         <div class="centered">
             <input id="championSelectInput" placeholder="Champion to counter">
             <button id="searchButton">Counter it</button>
         </div></br>
+
         <div class="flexContainer">
             <button id="toggleButton" class="hr"></button>
             <button class="toggleArrows">v</button>

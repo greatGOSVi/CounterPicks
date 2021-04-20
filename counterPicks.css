@@ -1,5 +1,21 @@
+body {
+  background-color: #e6e6e6;
+}
+
 .centered {
   text-align: center;
+}
+
+.summonerSearch {
+  width: 40%;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 32px;
+  text-align: center;
+  background-color: white;
+}
+.borderNone {
+  border: none;
 }
 
 .flexContainer {
@@ -22,7 +38,7 @@
 .selectionBox {
   width: 80%;
   background-color: blanchedalmond;
-  padding: 5px; /* Esto se quitara. Necesito ver como justificar la columna */
+  padding: 0px; /* Esto se quitara. Necesito ver como justificar la columna */
   border-top: 0;
   border-right: 4px;
   border-bottom: 4px;
@@ -39,6 +55,8 @@
   width: 100%;
   height: 75px;
   /*background-color: red;*/
+  margin-top: 8px;
+  margin-bottom: 8px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
