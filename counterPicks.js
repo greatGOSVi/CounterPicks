@@ -1,9 +1,9 @@
-const toggleButton = document.getElementById("toggleButton");
+const toggleBar = document.getElementsByClassName("toggleBar")[0];
 const toggleArrows = document.getElementsByClassName("toggleArrows")[0];
 const championsToggle = document.getElementsByClassName("selectionBox")[0];
 let toggleDisplayed = false;
 
-toggleButton.addEventListener("click", () => {
+toggleBar.addEventListener("click", () => {
     toggleDisplayed = !toggleDisplayed;
     championsToggle.style.display = toggleDisplayed ? "flex" : "none";
 });

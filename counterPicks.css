@@ -1,39 +1,46 @@
 body {
-  background-color: #e6e6e6;
+  background-color: #6b9df5;
 }
 
 .centered {
   text-align: center;
 }
 
-.summonerSearchContainer {
-  width: 20%;
-  padding: 6px;
-  border: 1px solid black;
-  border-radius: 32px;
-  margin-left: 10%;
-  text-align: center;
-  background-color: white;
+.border-outlineNone {
+  border: none;
+}
+.border-outlineNone:focus {
+  outline: none;
 }
 .borderNone {
   border: none;
 }
-.borderNone:focus {
-  outline: none;
+
+.summonerSearchContainer {
+  width: 18%;
+  padding: 6px;
+  border: 0px solid black;
+  border-radius: 32px;
+  margin-left: 10%;
+  text-align: center;
+  background-color: #ffffff;
 }
 
 .counterSearchContainer {
   width: 20%;
   padding: 8px;
-  border: 1px solid black;
+  border: 0px solid black;
+  border-radius: 8px;
   margin: auto; /* Esto lo tengo que checar */
-  background-color: white;
+  background-color: #ffffff;
   text-align: center;
 }
 .searchButton {
   height: 100%;
   border: none;
-  background-color: cornflowerblue;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #7d6bf5;
 }
 
 .flexContainer {
@@ -41,26 +48,20 @@ body {
   justify-content: center;
   align-items: center;
 }
-.hr {
+.toggleBar {
   width: 80%;
   height: 10px;
-  border: 0;
   margin: 0;
   background-color: black;
 }
 .toggleArrows {
-  border: none;
   position: absolute;
 }
 
 .selectionBox {
   width: 80%;
-  border-top: 0;
-  border-right: 4px;
-  border-bottom: 4px;
-  border-left: 4px;
-  border-style: solid;
-  border-color: black;
+  border: 4px solid black;
+  border-top: none;
   margin: auto;
   background-color: blanchedalmond;
   box-sizing: border-box;
