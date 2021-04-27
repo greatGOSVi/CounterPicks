@@ -26,17 +26,11 @@ body {
   text-align: center;
   background-color: #ffffff;
 }
-.summonerSearchButton {
-  width: auto;
-  height: 100%;
-  border: none;
-  background-color: #ffffff;
-}
 
 .counterSearchContainer {
   width: 20%;
-  height: 25px;
-  border: 0px solid black;
+  height: 30px;
+  border: 0px solid #000000;
   border-radius: 8px;
   margin: auto; /* Esto lo tengo que checar */
   background-color: #ffffff;
@@ -85,7 +79,7 @@ body {
   box-sizing: border-box;
   flex-direction: column;
   justify-content: space-around;
-  display: none;
+  display: flex;
 }
 .selectionRow {
   width: 100%;
