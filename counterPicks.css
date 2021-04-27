@@ -14,10 +14,11 @@ body {
 }
 .borderNone {
   border: none;
+  background-color: #ffffff;
 }
 
 .summonerSearchContainer {
-  width: 18%;
+  width: 20%;
   padding: 6px;
   border: 0px solid black;
   border-radius: 32px;
@@ -28,12 +29,15 @@ body {
 
 .counterSearchContainer {
   width: 20%;
-  padding: 8px;
+  height: 25px;
   border: 0px solid black;
   border-radius: 8px;
   margin: auto; /* Esto lo tengo que checar */
   background-color: #ffffff;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 .searchButton {
   height: 100%;
@@ -41,6 +45,8 @@ body {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   background-color: #7d6bf5;
+  position: absolute;
+  right: 0;
 }
 
 .flexContainer {
