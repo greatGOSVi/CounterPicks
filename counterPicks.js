@@ -48,6 +48,8 @@ const createSelectionRows = (names) => {
 
             selectionRow = document.createElement("div");
             selectionRow.className = "selectionRow";
+        } else if (i === champButtons.length - 1) {
+            selectionBox.appendChild(selectionRow);
         }
 
         selectionRow.appendChild(champButtons[i]);
