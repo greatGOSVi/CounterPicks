@@ -1,3 +1,4 @@
+const summonerSearchInput = document.getElementById("summonerSearchInput");
 const counterSearchInput = document.getElementById("counterSearchInput");
 const toggleBar = document.getElementsByClassName("toggleBar")[0];
 const toggleArrows = document.getElementsByClassName("toggleArrows")[0];
@@ -5,6 +6,25 @@ const championsToggle = document.getElementsByClassName("selectionBox")[0];
 let toggleDisplayed = true;
 const selectionBox = document.getElementsByClassName("selectionBox")[0];
 let champNames = [];
+
+
+const getSummonerInfo = async(sumName) => {
+    try{
+
+        const summonerInfoResponse = await fetch(`https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=RGAPI-f057f1f7-0743-4ebd-8a04-20291d0612fa`);
+        const summonerInfo = await summonerInfoResponse.json();
+        console.log(summonerInfo);
+
+    } catch(e){
+        console.error(e)
+    }
+}
+
+summonerSearchInput.addEventListener("keydown", (evnt) => {
+    if (evnt.key === "Enter") {
+        getSummonerInfo(evnt.target.value);
+    }
+});
 
 
 toggleBar.addEventListener("click", () => {
@@ -64,16 +84,7 @@ counterSearchInput.addEventListener("keyup", (evnt) => {
         createSelectionRows(champNames);
     } else {
         let filteredNames = champNames.filter((name) => {
-            for (let i = 0; i < name.length; i++){
-                if (evnt.target.value[0].toLowerCase() === name[i].toLowerCase()) {
-                    for (let j = 1; j < evnt.target.value.length; j++){
-                        if (name[i+j] !== evnt.target.value[j]) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
+            return name.toLowerCase().includes(evnt.target.value.toLowerCase());
         })
 
         while (selectionBox.firstChild) {
