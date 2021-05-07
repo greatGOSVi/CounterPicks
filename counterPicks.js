@@ -1,4 +1,20 @@
 const summonerSearchInput = document.getElementById("summonerSearchInput");
+const apiKey = "RGAPI-8c916b0b-27e4-4542-963d-eb7895898377";
+let region = "la1"; /* Esto va a ir en una funcion */
+const summPIcon = document.getElementsByClassName("summPIcon")[0];
+const summLvl = document.getElementById("summLvl");
+const summName = document.getElementById("summName");
+const summLIcon = document.getElementsByClassName("summLIcon")[0];
+const summTierRank = document.getElementById("summTierRank");
+const summLP = document.getElementById("summLP");
+
+summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/871.png`; /* Testing */
+summLvl.innerText = `284`;
+summName.innerText = `ggaabboo`;
+summLIcon.src = "C:\Users\gabo-\OneDrive\Escritorio\rankedEmblems";
+summTierRank.innerText = `GOLD IV`;
+summLP.innerText = `15 LP`;
+
 const counterSearchInput = document.getElementById("counterSearchInput");
 const toggleBar = document.getElementsByClassName("toggleBar")[0];
 const toggleArrows = document.getElementsByClassName("toggleArrows")[0];
@@ -10,10 +26,19 @@ let champNames = [];
 
 const getSummonerInfo = async(sumName) => {
     try{
-
-        const summonerInfoResponse = await fetch(`https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=RGAPI-f057f1f7-0743-4ebd-8a04-20291d0612fa`);
+        const summonerInfoResponse = await fetch(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=${apiKey}`);
         const summonerInfo = await summonerInfoResponse.json();
         console.log(summonerInfo);
+        const summonerLeagueResponse = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerInfo.id}?api_key=${apiKey}`);
+        const summonerLeague = await summonerLeagueResponse.json();
+
+        summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo.profileIconId}.png`;
+        summLvl.innerText = `${summonerInfo.summonerLevel}`;
+        summName.innerText = `${summonerInfo.name}`;
+
+        summLIcon.src = ``;
+        summTierRank.innerText = `${summonerLeague.tier} ${summonerLeague.rank}`;
+        summLP.innerText = `${summonerLeague.leaguePoints} LP`;
 
     } catch(e){
         console.error(e)
