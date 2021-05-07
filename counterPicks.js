@@ -4,16 +4,22 @@ let region = "la1"; /* Esto va a ir en una funcion */
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
 const summLvl = document.getElementById("summLvl");
 const summName = document.getElementById("summName");
-const summLIcon = document.getElementsByClassName("summLIcon")[0];
-const summTierRank = document.getElementById("summTierRank");
-const summLP = document.getElementById("summLP");
+const summSoloQIcon = document.getElementsByClassName("summLIcon")[0];
+const summSoloQTierRank = document.getElementById("summSoloQTierRank");
+const summSoloQLP = document.getElementById("summSoloQLP");
+const summFlexIcon = document.getElementsByClassName("summLIcon")[1];
+const summFlexTierRank = document.getElementById("summFlexTierRank");
+const summFlexLP = document.getElementById("summFlexLP");
 
 summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/871.png`; /* Testing */
 summLvl.innerText = `284`;
 summName.innerText = `ggaabboo`;
-summLIcon.src = "C:\Users\gabo-\OneDrive\Escritorio\rankedEmblems";
-summTierRank.innerText = `GOLD IV`;
-summLP.innerText = `15 LP`;
+summSoloQIcon.src = "C:\Users\gabo-\OneDrive\Escritorio\rankedEmblems";
+summSoloQTierRank.innerText = `GOLD IV`;
+summSoloQLP.innerText = `15 LP`;
+summFlexIcon.src = "";
+summFlexTierRank.innerText = `SILVER II`;
+summFlexLP.innerText = `50 LP`;
 
 const counterSearchInput = document.getElementById("counterSearchInput");
 const toggleBar = document.getElementsByClassName("toggleBar")[0];
@@ -36,9 +42,13 @@ const getSummonerInfo = async(sumName) => {
         summLvl.innerText = `${summonerInfo.summonerLevel}`;
         summName.innerText = `${summonerInfo.name}`;
 
-        summLIcon.src = ``;
-        summTierRank.innerText = `${summonerLeague.tier} ${summonerLeague.rank}`;
-        summLP.innerText = `${summonerLeague.leaguePoints} LP`;
+        summSoloQIcon.src = ``;
+        summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
+        summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
+
+        summFlexIcon.src = ``;
+        summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
+        summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
 
     } catch(e){
         console.error(e)
