@@ -1,5 +1,5 @@
 const summonerSearchInput = document.getElementById("summonerSearchInput");
-const apiKey = "RGAPI-8c916b0b-27e4-4542-963d-eb7895898377";
+const apiKey = "";
 let region = "la1"; /* Esto va a ir en una funcion */
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
 const summLvl = document.getElementById("summLvl");
