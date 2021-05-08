@@ -22,7 +22,7 @@ body {
   padding: 6px;
   border: 0px solid #000000;
   border-radius: 32px;
-  margin-left: 10%;
+  margin-left: 11%; /* Esto lo puedo cambiar */
   text-align: center;
   background-color: #ffffff;
   box-shadow: 5px 10px 10px #808080;
@@ -68,7 +68,7 @@ body {
   height: 30px;
   border: 0px solid #000000;
   border-radius: 8px;
-  margin: auto; /* Esto lo tengo que checar */
+  margin: auto;
   background-color: #ffffff;
   display: flex;
   align-items: center;
