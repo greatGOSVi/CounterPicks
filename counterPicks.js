@@ -1,7 +1,6 @@
 const summRegion = document.getElementById("summRegion");
 const summonerSearchInput = document.getElementById("summonerSearchInput");
 const apiKey = "";
-let region = "la1"; /* Esto va a ir en una funcion */
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
 const summLvl = document.getElementById("summLvl");
 const summName = document.getElementById("summName");
@@ -21,7 +20,6 @@ summSoloQLP.innerText = `15 LP`;
 summFlexIcon.src = `rankedEmblems/Emblem_SILVER.png`;
 summFlexTierRank.innerText = `SILVER II`;
 summFlexLP.innerText = `50 LP`;
-console.log(summRegion); /* Necesito hacer que de el valor del <select> */
 
 const counterSearchInput = document.getElementById("counterSearchInput");
 const toggleBar = document.getElementsByClassName("toggleBar")[0];
@@ -37,12 +35,12 @@ const getSummonerInfo = async(sumName, region) => {
         const summonerInfoResponse = await fetch(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=${apiKey}`);
         const summonerInfo = await summonerInfoResponse.json();
         console.log(summonerInfo);
-        const summonerLeagueResponse = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerInfo.id}?api_key=${apiKey}`);
+        const summonerLeagueResponse = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerInfo?.id}?api_key=${apiKey}`);
         const summonerLeague = await summonerLeagueResponse.json();
 
-        summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo.profileIconId}.png`;
-        summLvl.innerText = `${summonerInfo.summonerLevel}`;
-        summName.innerText = `${summonerInfo.name}`;
+        summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo?.profileIconId}.png`;
+        summLvl.innerText = `${summonerInfo?.summonerLevel}`;
+        summName.innerText = `${summonerInfo?.name}`;
 
         summSoloQIcon.src = `/rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
         summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
@@ -59,7 +57,7 @@ const getSummonerInfo = async(sumName, region) => {
 
 summonerSearchInput.addEventListener("keydown", (evnt) => {
     if (evnt.key === "Enter") {
-        getSummonerInfo(evnt.target.value,region); /* Aqui la region tiene que salir de el valor del <select> */
+        getSummonerInfo(evnt.target.value,summRegion.value);
     }
 });
 
