@@ -17,18 +17,26 @@ body {
   background-color: #ffffff;
 }
 
+.searchButton {
+  padding: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .summonerSearchContainer {
   width: 20%;
   padding: 6px;
   border: 0px solid #000000;
   border-radius: 32px;
   margin-left: 11%; /* Esto lo puedo cambiar */
-  text-align: center;
   background-color: #ffffff;
   box-shadow: 4px 8px 10px #808080;
+  display: flex;
+  justify-content: space-around;
 }
 .summonerInfoContainer {
-  width: 60%;
+  width: 50%;
   height: 300px;
   border: 0px solid #000000;
   border-radius: 32px;
@@ -65,30 +73,14 @@ body {
 
 .counterSearchContainer {
   width: 20%;
-  height: 30px;
+  padding: 6px;
   border: 0px solid #000000;
-  border-radius: 8px;
+  border-radius: 32px;
   margin: auto;
   background-color: #ffffff;
+  box-shadow: 4px 8px 10px #808080;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-.counterSearchButton {
-  height: 100%;
-  border: none;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  background-color: #6a8ae8;
-  position: absolute;
-  right: 0;
-}
-.counterSearchButton:focus {
-  outline: none;
-  background-color: #7d6bf5;
-  position: absolute;
-  right: 0;
+  justify-content: space-around;
 }
 
 .flexContainer {

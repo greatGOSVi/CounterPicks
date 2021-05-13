@@ -3,7 +3,7 @@ const summonerSearchInput = document.getElementById("summonerSearchInput");
 const apiKey = "RGAPI-cc05affe-d8cb-4660-b4a7-e46e48021837";
 
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
-const provisionalPIcon = Math.ceil(Math.random(1)*10);
+const provisionalPIcon = Math.ceil(Math.random() * (28 - 1)) + 1;
 summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon}.png`;
 const summLvl = document.getElementById("summLvl");
 const summName = document.getElementById("summName");
