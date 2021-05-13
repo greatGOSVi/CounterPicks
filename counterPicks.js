@@ -1,7 +1,10 @@
 const summRegion = document.getElementById("summRegion");
 const summonerSearchInput = document.getElementById("summonerSearchInput");
-const apiKey = "";
+const apiKey = "RGAPI-cc05affe-d8cb-4660-b4a7-e46e48021837";
+
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
+const provisionalPIcon = Math.ceil(Math.random(1)*10);
+summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon}.png`;
 const summLvl = document.getElementById("summLvl");
 const summName = document.getElementById("summName");
 const summSoloQIcon = document.getElementsByClassName("summLIcon")[0];
@@ -10,16 +13,6 @@ const summSoloQLP = document.getElementById("summSoloQLP");
 const summFlexIcon = document.getElementsByClassName("summLIcon")[1];
 const summFlexTierRank = document.getElementById("summFlexTierRank");
 const summFlexLP = document.getElementById("summFlexLP");
-
-summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/871.png`; /* Testing */
-summLvl.innerText = `284`;
-summName.innerText = `ggaabboo`;
-summSoloQIcon.src = `rankedEmblems/Emblem_GOLD.png`;
-summSoloQTierRank.innerText = `GOLD IV`;
-summSoloQLP.innerText = `15 LP`;
-summFlexIcon.src = `rankedEmblems/Emblem_SILVER.png`;
-summFlexTierRank.innerText = `SILVER II`;
-summFlexLP.innerText = `50 LP`;
 
 const counterSearchInput = document.getElementById("counterSearchInput");
 const toggleBar = document.getElementsByClassName("toggleBar")[0];
