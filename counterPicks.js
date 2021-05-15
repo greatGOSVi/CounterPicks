@@ -1,6 +1,6 @@
 const summRegion = document.getElementById("summRegion");
 const summonerSearchInput = document.getElementById("summonerSearchInput");
-const apiKey = "RGAPI-cc05affe-d8cb-4660-b4a7-e46e48021837";
+const apiKey = "";
 
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
 const provisionalPIcon = Math.ceil(Math.random() * (28 - 1)) + 1;
@@ -25,6 +25,8 @@ let champNames = [];
 
 const getSummonerInfo = async(sumName, region) => {
     try{
+        
+        // localhost:3000/summoner-info?sumName=ggaabboo&region=la1
         const summonerInfoResponse = await fetch(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=${apiKey}`);
         const summonerInfo = await summonerInfoResponse.json();
         console.log(summonerInfo);
@@ -121,3 +123,11 @@ counterSearchInput.addEventListener("keyup", (evnt) => {
         createSelectionRows(filteredNames);
     }
 })
+
+/*
+const getData = (async () => {
+    const response = await fetch("http://localhost:3000");
+    const data = await response.json();
+    console.log(data);
+})()
+*/
