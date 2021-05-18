@@ -23,44 +23,45 @@ let champNames = [];
 
 
 const getSummonerInfo = async(sumName, region) => {
-        const summonerInfoResponse = await fetch(`http://localhost:3000/summoner-info?region=${region}&sumName=${sumName}/`);
-        const summonerInfo = await summonerInfoResponse.json();
-        const summonerLeagueResponse = await fetch(`http://localhost:3000/summoner-league?region=${region}&sumID=${summonerInfo?.id}/`);
-        const summonerLeague = await summonerLeagueResponse.json();
+    const summonerInfoResponse = await fetch(`http://localhost:3000/summoner-info?region=${region}&sumName=${sumName}/`);
+    const summonerInfo = await summonerInfoResponse.json();
+    const summonerLeagueResponse = await fetch(`http://localhost:3000/summoner-league?region=${region}&sumID=${summonerInfo?.id}/`);
+    const summonerLeague = await summonerLeagueResponse.json();
 
-        if (summonerInfo.profileIconId) {
+    if (summonerInfo.profileIconId) {
             summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo?.profileIconId}.png`;
             summLvl.innerText = `${summonerInfo?.summonerLevel}`;
             summName.innerText = `${summonerInfo?.name}`;
-        } else {
+    } else {
             summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon(1, 28)}.png`;
             summLvl.innerText = "Lvl";
             summName.innerText = "NOT-FOUND";
-        }
-        console.log(summonerInfo);
-        if (summonerLeague[1]){
-            summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
-            summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
-            summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
-        } else {
-            summSoloQIcon.src = "rankedEmblems/provisional.png";
-            summSoloQTierRank.innerText = "Unranked";
-            summSoloQLP.innerText = "0 LP";
-        }
-        if (summonerLeague[0]) {
-            summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[0]?.tier}.png`;
-            summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
-            summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
-        } else {
-            summFlexIcon.src = "rankedEmblems/provisional.png";
-            summFlexTierRank.innerText = "Unranked";
-            summFlexLP.innerText = "0 LP";
-        }
+    }
+    if (summonerLeague[1]){
+        summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
+        summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
+        summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
+    } else {
+        summSoloQIcon.src = "rankedEmblems/provisional.png";
+        summSoloQTierRank.innerText = "Unranked";
+        summSoloQLP.innerText = "0 LP";
+    }
+    if (summonerLeague[0]) {
+        summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[0]?.tier}.png`;
+        summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
+        summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
+    } else {
+        summFlexIcon.src = "rankedEmblems/provisional.png";
+        summFlexTierRank.innerText = "Unranked";
+        summFlexLP.innerText = "0 LP";
+    }
 }
 
 summonerSearchInput.addEventListener("keydown", (evnt) => {
     if (evnt.key === "Enter") {
-        getSummonerInfo(evnt.target.value,summRegion.value);
+        if (evnt.target.value.length > 2) {
+            getSummonerInfo(evnt.target.value,summRegion.value);
+        }
     }
 });
 
@@ -131,11 +132,3 @@ counterSearchInput.addEventListener("keyup", (evnt) => {
         createSelectionRows(filteredNames);
     }
 })
-
-/*
-const getData = (async () => {
-    const response = await fetch("http://localhost:3000");
-    const data = await response.json();
-    console.log(data);
-})()
-*/
