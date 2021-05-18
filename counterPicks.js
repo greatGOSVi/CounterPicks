@@ -1,10 +1,9 @@
 const summRegion = document.getElementById("summRegion");
 const summonerSearchInput = document.getElementById("summonerSearchInput");
-const apiKey = "";
 
 const summPIcon = document.getElementsByClassName("summPIcon")[0];
-const provisionalPIcon = Math.ceil(Math.random() * (28 - 1)) + 1;
-summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon}.png`;
+const provisionalPIcon = (min, max) => Math.ceil(Math.random() * (max - min)) + 1;
+summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon(1, 28)}.png`;
 const summLvl = document.getElementById("summLvl");
 const summName = document.getElementById("summName");
 const summSoloQIcon = document.getElementsByClassName("summLIcon")[0];
@@ -24,30 +23,39 @@ let champNames = [];
 
 
 const getSummonerInfo = async(sumName, region) => {
-    try{
-        
-        // localhost:3000/summoner-info?sumName=ggaabboo&region=la1
-        const summonerInfoResponse = await fetch(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${sumName}?api_key=${apiKey}`);
+        const summonerInfoResponse = await fetch(`http://localhost:3000/summoner-info?region=${region}&sumName=${sumName}/`);
         const summonerInfo = await summonerInfoResponse.json();
-        console.log(summonerInfo);
-        const summonerLeagueResponse = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerInfo?.id}?api_key=${apiKey}`);
+        const summonerLeagueResponse = await fetch(`http://localhost:3000/summoner-league?region=${region}&sumID=${summonerInfo?.id}/`);
         const summonerLeague = await summonerLeagueResponse.json();
 
-        summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo?.profileIconId}.png`;
-        summLvl.innerText = `${summonerInfo?.summonerLevel}`;
-        summName.innerText = `${summonerInfo?.name}`;
-
-        summSoloQIcon.src = `/rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
-        summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
-        summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
-
-        summFlexIcon.src = `/rankedEmblems/Emblem_${summonerLeague[0]?.tier}.png`;
-        summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
-        summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
-
-    } catch(e){
-        console.error(e)
-    }
+        if (summonerInfo.profileIconId) {
+            summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${summonerInfo?.profileIconId}.png`;
+            summLvl.innerText = `${summonerInfo?.summonerLevel}`;
+            summName.innerText = `${summonerInfo?.name}`;
+        } else {
+            summPIcon.src = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/${provisionalPIcon(1, 28)}.png`;
+            summLvl.innerText = "Lvl";
+            summName.innerText = "NOT-FOUND";
+        }
+        console.log(summonerInfo);
+        if (summonerLeague[1]){
+            summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
+            summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
+            summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
+        } else {
+            summSoloQIcon.src = "rankedEmblems/provisional.png";
+            summSoloQTierRank.innerText = "Unranked";
+            summSoloQLP.innerText = "0 LP";
+        }
+        if (summonerLeague[0]) {
+            summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[0]?.tier}.png`;
+            summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
+            summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
+        } else {
+            summFlexIcon.src = "rankedEmblems/provisional.png";
+            summFlexTierRank.innerText = "Unranked";
+            summFlexLP.innerText = "0 LP";
+        }
 }
 
 summonerSearchInput.addEventListener("keydown", (evnt) => {
