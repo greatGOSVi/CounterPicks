@@ -69,7 +69,7 @@ const getSummonerInfo = async (sumName, region, gameVersion) => {
     while (matchDisplayBox.firstChild) {
         matchDisplayBox.removeChild(matchDisplayBox.lastChild);
     }
-    getMatchList(region, gameVersion, puuid, sumName);
+    getMatchList(region, gameVersion, puuid, 100, sumName);
 }
 
 summonerSearchInput.addEventListener("keydown", (evnt) => {
@@ -150,7 +150,7 @@ counterSearchInput.addEventListener("keyup", (evnt) => {
 
 const matchHistoryContainer = document.getElementsByClassName("whiteBigContainer")[1];
 const matchDisplayBox = document.getElementsByClassName("matchDisplayBox")[0];
-const getMatchList = async (region, gameVersion, puuid, sumName) => {
+const getMatchList = async (region, gameVersion, puuid, count, summName) => {
     let reg = "americas";
 
     switch (region) {
@@ -173,16 +173,17 @@ const getMatchList = async (region, gameVersion, puuid, sumName) => {
             break;
     };
 
-    const matchListResponse = await fetch(`http://localhost:3000/match-list?region=${reg}&puuid=${puuid}`);
+    const matchListResponse = await fetch(`http://localhost:3000/match-list?region=${reg}&puuid=${puuid}&count=${count}`);
     const matchList = await matchListResponse.json();
 
     matchHistoryContainer.style.display = "flex";
-    for (let i = 0; i < matchList.length; i++) {
+    for (let i = 0; i < 20; i++) {
         const matchInfoResponse = await fetch(`http://localhost:3000/match-info?region=${reg}&matchId=${matchList[i]}`);
         const matchInfo = await matchInfoResponse.json();
 
-        createMatchDisplayRow(matchInfo, gameVersion, sumName);
+        createMatchDisplayRow(matchInfo, gameVersion, summName);
     }
+    getPersonalStatistics(matchList, reg, summName);
 }
 const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
     const matchDisplayRow = document.createElement("div");
@@ -240,9 +241,6 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
                 const spellsInfo = await spellsInfoResponse.json();
                 const spellsInfoKeys = Object.keys(spellsInfo.data);
                 for (let i = 0; i < spellsInfoKeys.length; i++) {
-                    
-                    console.log(spellsInfo.data[spellsInfoKeys[i]].key, info?.summoner1Id, info?.summoner2Id, spellsInfoKeys[i])
-
                     if (parseInt(spellsInfo.data[spellsInfoKeys[i]].key) === info?.summoner1Id) {
                         summ1Img.src = `https://ddragon.leagueoflegends.com/cdn/${gameVersion}/img/spell/${spellsInfoKeys[i]}.png`;
                     } else if (parseInt(spellsInfo.data[spellsInfoKeys[i]].key) === info?.summoner2Id) {
@@ -293,6 +291,21 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
 
             matchDisplayBox.appendChild(matchDisplayRow);
             break;
+        }
+    }
+}
+
+const getPersonalStatistics = async (matchListForStats, region, summName) => {
+
+    for (let i=0; i<matchListForStats.length; i++) {
+        const matchInfoForStatsResponse = await fetch(`http://localhost:3000/match-info?region=${region}&matchId=${matchListForStats[i]}`);
+        const matchInfoForStats = await matchInfoForStatsResponse.json();
+
+        for (let i = 0; i < matchInfoForStats?.info.participants.length; i++) {
+            console.log(matchInfoForStats, i);
+            if (matchInfoForStats?.info.participants[i].summonerName.toLowerCase() === summName.toLowerCase()) {
+                const info = matchInfoForStats?.info.participants[i];
+            }
         }
     }
 }
