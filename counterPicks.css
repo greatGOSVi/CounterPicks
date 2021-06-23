@@ -162,3 +162,86 @@ body {
   max-width: 75px;
   max-height: 75px;
 }
+
+.matchDisplayBox {
+  max-width: 100%;
+  border-radius: 32px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+.matchDisplayRow {
+  width: 98%;
+  height: 100px;
+  max-height: 100px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 20px;
+  background-color: red;
+  display: flex;
+  align-items: center;
+}
+.matchGameInfo {
+  width: 13%;
+  max-height: 80%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.matchChampInfo {
+  width: 10%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.matchChampImg {
+  width: 55%;
+  max-height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.matchSummonerSpellsInfo {
+  width: 5%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.matchSummonerSpells {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+}
+.matchItemsInfo {
+  width: 44%;
+  margin-left: 6%;
+  margin-right: 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.matchItem {
+  width: 12.5%;
+  height: 64%;
+  border-radius: 8px;
+}
+.matchNoItem {
+  width: 12.2%;
+  height: 62px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  background-color: #d3d3d3;
+}
+.matchScoreInfo {
+  width: 9%;
+  margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
