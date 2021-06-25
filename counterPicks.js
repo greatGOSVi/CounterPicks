@@ -46,23 +46,29 @@ const getSummonerInfo = async (sumName, region, gameVersion) => {
         summLvl.innerText = "Lvl";
         summName.innerText = "NOT-FOUND";
     }
-    if (summonerLeague[1]) {
-        summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[1]?.tier}.png`;
-        summSoloQTierRank.innerText = `${summonerLeague[1]?.tier} ${summonerLeague[1]?.rank}`;
-        summSoloQLP.innerText = `${summonerLeague[1]?.leaguePoints} LP`;
-    } else {
-        summSoloQIcon.src = "rankedEmblems/provisional.png";
-        summSoloQTierRank.innerText = "Unranked";
-        summSoloQLP.innerText = "0 LP";
-    }
-    if (summonerLeague[0]) {
-        summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[0]?.tier}.png`;
-        summFlexTierRank.innerText = `${summonerLeague[0]?.tier} ${summonerLeague[0]?.rank}`;
-        summFlexLP.innerText = `${summonerLeague[0]?.leaguePoints} LP`;
-    } else {
-        summFlexIcon.src = "rankedEmblems/provisional.png";
-        summFlexTierRank.innerText = "Unranked";
-        summFlexLP.innerText = "0 LP";
+
+    for (let i=0; i<summonerLeague.length; i++) {
+        if (summonerLeague[i].queueType === "RANKED_SOLO_5x5") {
+            if (summonerLeague[i]) {
+                summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[i]?.tier}.png`;
+                summSoloQTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                summSoloQLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
+            } else {
+                summSoloQIcon.src = "rankedEmblems/provisional.png";
+                summSoloQTierRank.innerText = "Unranked";
+                summSoloQLP.innerText = "0 LP";
+            }
+        } else if (summonerLeague[i].queueType === "RANKED_FLEX_SR") {
+            if (summonerLeague[i]) {
+                summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[i]?.tier}.png`;
+                summFlexTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                summFlexLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
+            } else {
+                summFlexIcon.src = "rankedEmblems/provisional.png";
+                summFlexTierRank.innerText = "Unranked";
+                summFlexLP.innerText = "0 LP";
+            }
+        }
     }
 
     const puuid = `${summonerInfo?.puuid}`;
@@ -150,6 +156,7 @@ counterSearchInput.addEventListener("keyup", (evnt) => {
 
 const matchHistoryContainer = document.getElementsByClassName("whiteBigContainer")[1];
 const matchDisplayBox = document.getElementsByClassName("matchDisplayBox")[0];
+const matchHistoryLength = 20;
 const getMatchList = async (region, gameVersion, puuid, count, summName) => {
     let reg = "americas";
 
@@ -177,7 +184,7 @@ const getMatchList = async (region, gameVersion, puuid, count, summName) => {
     const matchList = await matchListResponse.json();
 
     matchHistoryContainer.style.display = "flex";
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < matchHistoryLength; i++) {
         const matchInfoResponse = await fetch(`http://localhost:3000/match-info?region=${reg}&matchId=${matchList[i]}`);
         const matchInfo = await matchInfoResponse.json();
 
@@ -189,6 +196,7 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
     const matchDisplayRow = document.createElement("div");
     matchDisplayRow.className = "matchDisplayRow";
 
+    console.log(matchInfo?.info.participants);
     for (let i = 0; i < matchInfo?.info.participants.length; i++) {
         if (matchInfo?.info.participants[i].summonerName.toLowerCase() === summName.toLowerCase()) {
             const info = matchInfo?.info.participants[i];
@@ -202,7 +210,44 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
             const gameInfo = document.createElement("div");
             gameInfo.className = "matchGameInfo";
             const gameMode = document.createElement("strong");
-            gameMode.innerText = `${matchInfo?.info.gameMode}`;
+            switch(matchInfo?.info.gameMode) {
+                case "CLASSIC":
+                    switch(matchInfo?.info.queueId) {
+                        case 430:
+                            gameMode.innerText = `BLINDPICK`;
+                            break;
+                        case 400:
+                            gameMode.innerText = `DRAFTPICK`;
+                            break;
+                        case 420:
+                            gameMode.innerText = `SOLOQ`;
+                            break;
+                        case 440:
+                            gameMode.innerText = `FLEX`;
+                            break;
+                    }
+                    break;
+                case "DOOMBOTSTEEMO":
+                case "ONEFORALL":
+                case "FIRSTBLOOD":
+                case "KINGPORO":
+                case "DARKSTAR":
+                case "STARGUARDIAN":
+                case "NEXUSBLITZ":
+                default:
+                    switch(matchInfo?.info.queueId) {
+                        case 0:
+                            gameMode.innerText = `CUSTOM`;
+                            break;
+                        case 700:
+                            gameMode.innerText = `CLASH`;
+                            break;
+                        default:
+                            gameMode.innerText = `${matchInfo?.info.gameMode}`;
+                            break;
+                    }
+                    break;
+            }
             gameInfo.appendChild(gameMode);
             const gameTime = document.createElement("div");
             const gameDuration = (matchInfo?.info.gameDuration/60000).toFixed();
@@ -295,17 +340,40 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
     }
 }
 
+let latestMatchRegistered; // Esto lo sacaria de la base de datos
 const getPersonalStatistics = async (matchListForStats, region, summName) => {
+    for (let i=0; i < matchListForStats.length; i++) {
+        if (matchListForStats[i] === latestMatchRegistered) {
+            break;
+        } else {
+            const matchInfoForStatsResponse = await fetch(`http://localhost:3000/match-info?region=${region}&matchId=${matchListForStats[i]}`);
+            const matchInfoForStats = await matchInfoForStatsResponse.json();
 
-    for (let i=0; i<matchListForStats.length; i++) {
-        const matchInfoForStatsResponse = await fetch(`http://localhost:3000/match-info?region=${region}&matchId=${matchListForStats[i]}`);
-        const matchInfoForStats = await matchInfoForStatsResponse.json();
-
-        for (let i = 0; i < matchInfoForStats?.info.participants.length; i++) {
-            console.log(matchInfoForStats, i);
-            if (matchInfoForStats?.info.participants[i].summonerName.toLowerCase() === summName.toLowerCase()) {
-                const info = matchInfoForStats?.info.participants[i];
+            if (matchInfoForStats?.info.gameMode === "CLASSIC" && matchInfoForStats?.info.gameType === "MATCHED_GAME") {
+                for (let j = 0; j < matchInfoForStats?.info.participants.length; j++) {
+                    const participantInfo = matchInfoForStats?.info.participants[j];
+    
+                    if (participantInfo?.summonerName.toLowerCase() === summName.toLowerCase()) {
+                        if (matchInfoForStats?.info.queueId === 420) {
+                            console.log(i, matchListForStats[i], "RANKED")
+                            // Aca sumaria +1 a soloQWins o soloQLoses dependiendo de los campeones usados en la teamPosition
+                            // Tambien sumaria +1 a totalWins o totalLoses para las stats generales
+                        } else {
+                            console.log(i, matchListForStats[i], "NORMAL")
+                            // Aca me sumaria +1 a totalWins o totalLoses dependiendo de los campeones usados en la teamPosition
+                        }
+                    } else {
+                        
+                    }
+                }
             }
         }
     }
+    latestMatchRegistered = matchListForStats[0]; // Esto iria a la base de datos
 }
+// los for de createMatchRow, repito el let i=0. El break para la funcion? o las llaves{} mas inmediatas
+// En matchInfoForStats.info.queueId sale si es ranked o normal. 
+// 0=Custom, 400=DraftPick, 420=Solo/DuoQ, 430=BlindPick, 440=FlexQ, 450=ARAM, 700=Clash, 830/840/850=Co-op, 900=URF
+// 950/960=DoomBots, 1010=ARURF, 1020=OneforAll, 1300=NexusBlitz, 2000/2010/2020=Tutorial
+// 430=BLINDPICK, 400=DRAFTPICK, 420=SOLOQ, 440=FLEX | 0=CUSTOM, 700=CLASH
+// summoner names con espacio

@@ -119,7 +119,7 @@ body {
   padding-top: 25px;
   padding-bottom: 25px;
   border-radius: 32px;
-  background-color: blanchedalmond;
+  background-color: #ffffff;
   box-shadow: 5px 10px 10px #808080;
   display: flex;
   justify-content: space-around;
@@ -135,7 +135,7 @@ body {
   overflow: auto;
 }
 .selectionBox {
-  background-color: blanchedalmond;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
