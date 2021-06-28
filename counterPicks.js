@@ -47,26 +47,42 @@ const getSummonerInfo = async (sumName, region, gameVersion) => {
         summName.innerText = "NOT-FOUND";
     }
 
-    for (let i=0; i<summonerLeague.length; i++) {
+    for (let i=0; i<2; i++) {
         if (summonerLeague[i].queueType === "RANKED_SOLO_5x5") {
-            if (summonerLeague[i]) {
-                summSoloQIcon.src = `rankedEmblems/Emblem_${summonerLeague[i]?.tier}.png`;
-                summSoloQTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
-                summSoloQLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
-            } else {
-                summSoloQIcon.src = "rankedEmblems/provisional.png";
-                summSoloQTierRank.innerText = "Unranked";
-                summSoloQLP.innerText = "0 LP";
+            summSoloQIcon.src = `rankedEmblems/${summonerLeague[i]?.tier}${summonerLeague[i]?.rank}.png`;
+            switch (summonerLeague[i].tier) {
+                case "MASTER":
+                case "GRANDMASTER":
+                case "CHALLENGER":
+                    summSoloQTierRank.innerText = `${summonerLeague[i]?.tier}`;
+                    break;
+                default:
+                    summSoloQTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                    break;
             }
+            summSoloQLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
         } else if (summonerLeague[i].queueType === "RANKED_FLEX_SR") {
-            if (summonerLeague[i]) {
-                summFlexIcon.src = `rankedEmblems/Emblem_${summonerLeague[i]?.tier}.png`;
-                summFlexTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
-                summFlexLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
-            } else {
+            summFlexIcon.src = `rankedEmblems/${summonerLeague[i]?.tier}${summonerLeague[i]?.rank}.png`;
+            switch (summonerLeague[i].tier) {
+                case "MASTER":
+                case "GRANDMASTER":
+                case "CHALLENGER":
+                    summFlexTierRank.innerText = `${summonerLeague[i]?.tier}`;
+                    break;
+                default:
+                    summFlexTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                    break;
+            }
+            summFlexLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
+        } else {                                                                // Este else no esta entrando
+            if (summonerLeague[0].queueType === "RANKED_SOLO_5x5") {
                 summFlexIcon.src = "rankedEmblems/provisional.png";
-                summFlexTierRank.innerText = "Unranked";
+                summFlexTierRank.innerText = "UNRANKED";
                 summFlexLP.innerText = "0 LP";
+            } else if (summonerLeague[0].queueType === "RANKED_FLEX_SR") {
+                summSoloQIcon.src = "rankedEmblems/provisional.png";
+                summSoloQTierRank.innerText = "UNRANKED";
+                summSoloQLP.innerText = "0 LP";
             }
         }
     }
@@ -75,7 +91,7 @@ const getSummonerInfo = async (sumName, region, gameVersion) => {
     while (matchDisplayBox.firstChild) {
         matchDisplayBox.removeChild(matchDisplayBox.lastChild);
     }
-    getMatchList(region, gameVersion, puuid, 100, sumName);
+    getMatchList(region, gameVersion, puuid, 20, sumName);
 }
 
 summonerSearchInput.addEventListener("keydown", (evnt) => {
@@ -180,7 +196,8 @@ const getMatchList = async (region, gameVersion, puuid, count, summName) => {
             break;
     };
 
-    const matchListResponse = await fetch(`http://localhost:3000/match-list?region=${reg}&puuid=${puuid}&count=${count}`);
+    let matchType = "";
+    const matchListResponse = await fetch(`http://localhost:3000/match-list?region=${reg}&puuid=${puuid}&matchType=${matchType}&count=${count}`);
     const matchList = await matchListResponse.json();
 
     matchHistoryContainer.style.display = "flex";
@@ -190,13 +207,16 @@ const getMatchList = async (region, gameVersion, puuid, count, summName) => {
 
         createMatchDisplayRow(matchInfo, gameVersion, summName);
     }
-    getPersonalStatistics(matchList, reg, summName);
+
+    matchType = "ranked";
+    const rankedListResponse =  await fetch(`http://localhost:3000/match-list?region=${reg}&puuid=${puuid}&matchType=${matchType}&count=100`);
+    const rankedList = await rankedListResponse.json();
+    getPersonalStatistics(rankedList, reg, summName);
 }
 const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
     const matchDisplayRow = document.createElement("div");
     matchDisplayRow.className = "matchDisplayRow";
 
-    console.log(matchInfo?.info.participants);
     for (let i = 0; i < matchInfo?.info.participants.length; i++) {
         if (matchInfo?.info.participants[i].summonerName.toLowerCase() === summName.toLowerCase()) {
             const info = matchInfo?.info.participants[i];
@@ -225,6 +245,9 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
                         case 440:
                             gameMode.innerText = `FLEX`;
                             break;
+                        case 700:
+                        gameMode.innerText = `CLASH`;
+                        break;
                     }
                     break;
                 case "DOOMBOTSTEEMO":
@@ -239,9 +262,6 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
                         case 0:
                             gameMode.innerText = `CUSTOM`;
                             break;
-                        case 700:
-                            gameMode.innerText = `CLASH`;
-                            break;
                         default:
                             gameMode.innerText = `${matchInfo?.info.gameMode}`;
                             break;
@@ -250,8 +270,9 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
             }
             gameInfo.appendChild(gameMode);
             const gameTime = document.createElement("div");
-            const gameDuration = (matchInfo?.info.gameDuration/60000).toFixed();
-            gameTime.innerText = `${gameDuration}min`;
+            const gameDurationMins = Math.trunc(matchInfo?.info.gameDuration/60000);
+            const gameDurationSegs = Math.trunc(((matchInfo?.info.gameDuration/60000)-(Math.trunc(matchInfo?.info.gameDuration/60000)))*60);
+            gameTime.innerText = `${gameDurationMins}m ${gameDurationSegs}s`; // Esta el problema de los -8 segs
             gameInfo.appendChild(gameTime)
             matchDisplayRow.appendChild(gameInfo);
 
@@ -354,7 +375,7 @@ const getPersonalStatistics = async (matchListForStats, region, summName) => {
                     const participantInfo = matchInfoForStats?.info.participants[j];
     
                     if (participantInfo?.summonerName.toLowerCase() === summName.toLowerCase()) {
-                        if (matchInfoForStats?.info.queueId === 420) {
+                        if (matchInfoForStats?.info.queueId === 420 || matchInfoForStats?.info.queueId === 440 || matchInfoForStats?.info.queueId === 700) {
                             console.log(i, matchListForStats[i], "RANKED")
                             // Aca sumaria +1 a soloQWins o soloQLoses dependiendo de los campeones usados en la teamPosition
                             // Tambien sumaria +1 a totalWins o totalLoses para las stats generales
@@ -372,8 +393,7 @@ const getPersonalStatistics = async (matchListForStats, region, summName) => {
     latestMatchRegistered = matchListForStats[0]; // Esto iria a la base de datos
 }
 // los for de createMatchRow, repito el let i=0. El break para la funcion? o las llaves{} mas inmediatas
-// En matchInfoForStats.info.queueId sale si es ranked o normal. 
 // 0=Custom, 400=DraftPick, 420=Solo/DuoQ, 430=BlindPick, 440=FlexQ, 450=ARAM, 700=Clash, 830/840/850=Co-op, 900=URF
 // 950/960=DoomBots, 1010=ARURF, 1020=OneforAll, 1300=NexusBlitz, 2000/2010/2020=Tutorial
-// 430=BLINDPICK, 400=DRAFTPICK, 420=SOLOQ, 440=FLEX | 0=CUSTOM, 700=CLASH
+// 430=BLINDPICK, 400=DRAFTPICK, 420=SOLOQ, 440=FLEX, 700=CLASH | 0=CUSTOM
 // summoner names con espacio
