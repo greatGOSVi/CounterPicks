@@ -48,38 +48,38 @@ const getSummonerInfo = async (sumName, region, gameVersion) => {
     }
 
     for (let i=0; i<2; i++) {
-        if (summonerLeague[i].queueType === "RANKED_SOLO_5x5") {
-            summSoloQIcon.src = `rankedEmblems/${summonerLeague[i]?.tier}${summonerLeague[i]?.rank}.png`;
+        if (summonerLeague[i]?.queueType === "RANKED_SOLO_5x5") {
+            summSoloQIcon.src = `rankedEmblems/${summonerLeague[i].tier}${summonerLeague[i].rank}.png`;
             switch (summonerLeague[i].tier) {
                 case "MASTER":
                 case "GRANDMASTER":
                 case "CHALLENGER":
-                    summSoloQTierRank.innerText = `${summonerLeague[i]?.tier}`;
+                    summSoloQTierRank.innerText = `${summonerLeague[i].tier}`;
                     break;
                 default:
-                    summSoloQTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                    summSoloQTierRank.innerText = `${summonerLeague[i].tier} ${summonerLeague[i].rank}`;
                     break;
             }
             summSoloQLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
-        } else if (summonerLeague[i].queueType === "RANKED_FLEX_SR") {
-            summFlexIcon.src = `rankedEmblems/${summonerLeague[i]?.tier}${summonerLeague[i]?.rank}.png`;
+        } else if (summonerLeague[i]?.queueType === "RANKED_FLEX_SR") {
+            summFlexIcon.src = `rankedEmblems/${summonerLeague[i].tier}${summonerLeague[i].rank}.png`;
             switch (summonerLeague[i].tier) {
                 case "MASTER":
                 case "GRANDMASTER":
                 case "CHALLENGER":
-                    summFlexTierRank.innerText = `${summonerLeague[i]?.tier}`;
+                    summFlexTierRank.innerText = `${summonerLeague[i].tier}`;
                     break;
                 default:
-                    summFlexTierRank.innerText = `${summonerLeague[i]?.tier} ${summonerLeague[i]?.rank}`;
+                    summFlexTierRank.innerText = `${summonerLeague[i].tier} ${summonerLeague[i].rank}`;
                     break;
             }
             summFlexLP.innerText = `${summonerLeague[i]?.leaguePoints} LP`;
-        } else {                                                                // Este else no esta entrando
-            if (summonerLeague[0].queueType === "RANKED_SOLO_5x5") {
+        } else {      
+            if (summonerLeague[0]?.queueType === "RANKED_SOLO_5x5") {
                 summFlexIcon.src = "rankedEmblems/provisional.png";
                 summFlexTierRank.innerText = "UNRANKED";
                 summFlexLP.innerText = "0 LP";
-            } else if (summonerLeague[0].queueType === "RANKED_FLEX_SR") {
+            } else if (summonerLeague[0]?.queueType === "RANKED_FLEX_SR") {
                 summSoloQIcon.src = "rankedEmblems/provisional.png";
                 summSoloQTierRank.innerText = "UNRANKED";
                 summSoloQLP.innerText = "0 LP";
@@ -218,7 +218,7 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
     matchDisplayRow.className = "matchDisplayRow";
 
     for (let i = 0; i < matchInfo?.info.participants.length; i++) {
-        if (matchInfo?.info.participants[i].summonerName.toLowerCase() === summName.toLowerCase()) {
+        if ((matchInfo?.info.participants[i].summonerName.replaceAll(" ", "")).toLowerCase() === (summName.replaceAll(" ", "")).toLowerCase()) {
             const info = matchInfo?.info.participants[i];
 
             if (info?.win) {
@@ -270,8 +270,8 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
             }
             gameInfo.appendChild(gameMode);
             const gameTime = document.createElement("div");
-            const gameDurationMins = Math.trunc(matchInfo?.info.gameDuration/60000);
-            const gameDurationSegs = Math.trunc(((matchInfo?.info.gameDuration/60000)-(Math.trunc(matchInfo?.info.gameDuration/60000)))*60);
+            const gameDurationMins = Math.trunc((matchInfo?.info.gameDuration-8000)/60000);
+            const gameDurationSegs = Math.trunc((((matchInfo?.info.gameDuration-8000)/60000)-(Math.trunc((matchInfo?.info.gameDuration-8000)/60000)))*60);
             gameTime.innerText = `${gameDurationMins}m ${gameDurationSegs}s`; // Esta el problema de los -8 segs
             gameInfo.appendChild(gameTime)
             matchDisplayRow.appendChild(gameInfo);
