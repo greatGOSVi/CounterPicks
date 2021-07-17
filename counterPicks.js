@@ -246,8 +246,8 @@ const createMatchDisplayRow = (matchInfo, gameVersion, summName) => {
                             gameMode.innerText = `FLEX`;
                             break;
                         case 700:
-                        gameMode.innerText = `CLASH`;
-                        break;
+                            gameMode.innerText = `CLASH`;
+                            break;
                     }
                     break;
                 case "DOOMBOTSTEEMO":
@@ -396,4 +396,3 @@ const getPersonalStatistics = async (matchListForStats, region, summName) => {
 // 0=Custom, 400=DraftPick, 420=Solo/DuoQ, 430=BlindPick, 440=FlexQ, 450=ARAM, 700=Clash, 830/840/850=Co-op, 900=URF
 // 950/960=DoomBots, 1010=ARURF, 1020=OneforAll, 1300=NexusBlitz, 2000/2010/2020=Tutorial
 // 430=BLINDPICK, 400=DRAFTPICK, 420=SOLOQ, 440=FLEX, 700=CLASH | 0=CUSTOM
-// summoner names con espacio
